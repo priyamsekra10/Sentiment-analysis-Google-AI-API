@@ -34,10 +34,13 @@ defaults = {
 # Process each record
 def process_and_append_added_sentiment_and_score_results_to_csv(single_record):
   # Access the value in the first row and nineth column
-  Sentence = single_record.loc[single_record.index, "Summary"]
-  prompt = f"""Tell me whether the following sentence's sentiment is 'positive', 'negative' or neither which would make it 'neutral'.
+  Sentence = single_record.loc[single_record.index, "Text"]
+  # prompt = f"""Tell me whether the following sentence's sentiment is 'positive', 'negative' or neither which would make it 'neutral'.
+  #           Sentence {Sentence}
+  #           Sentiment"""
+  prompt = f"""I will provide you a sentance at a time. You have to analyze the sentiment fo the user and only return back the score of positivity. The score can be anywhere between 0 to 100. 100 for very positive, 0 for negitive.
             Sentence {Sentence}
-            Sentiment"""
+            Sentiment score"""
   response = palm.generate_text(
     **defaults,
     prompt=prompt
@@ -87,7 +90,7 @@ def create_sentiment_distribution_graph():
   plt.show()
 # Read the data into a DataFrame  
 df_no_sentiment_no_score = pd.read_csv("food_review_data_no_sentiment_no_score.csv")
-df_no_sentiment_no_score_filtered = df_no_sentiment_no_score[['Id', 'Summary']]
+df_no_sentiment_no_score_filtered = df_no_sentiment_no_score[['Id', 'Text']]
 # Get the number of rows in the DataFrame
 n_rows = len(df_no_sentiment_no_score_filtered)
 # Iterate over every single record
