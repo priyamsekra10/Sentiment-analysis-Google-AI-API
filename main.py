@@ -14,12 +14,11 @@ load_dotenv()
 # Configure Google Generative AI Palm API with API key
 palm.configure(api_key=os.environ['API_KEY'])
 
-# Define default settings for text generation model
 defaults = {
     'model': 'models/text-bison-001',
     'temperature': 0.7,
     'candidate_count': 1,
-    'top_k': 40,
+    'top_k': 40, 
     'top_p': 0.95,
     'max_output_tokens': 1024,
     'stop_sequences': [],
@@ -40,7 +39,7 @@ def process_and_append_summary_to_csv(single_record):
     sentence = single_record["Text"]
     
     # Prompt to generate summary
-    prompt = f"""Summarize the following sentence in 6-8 words:
+    prompt = f"""Summarize the following sentence in 6-8 words retaining the information that shows the sentiment of the user:
               {sentence}"""
     
     # Generate summary
@@ -68,7 +67,7 @@ def analyze_sentiment_of_summaries():
         # prompt = f"""Analyze the sentiment of the following summary:
         #           {summary}"""
         
-        prompt = f"""I will provide you a sentance at a time. You have to analyze the sentiment fo the user and only return back the score of positivity. The score can be anywhere between 0 to 100. 100 for very positive, 0 for negitive.
+        prompt = f"""I will provide you a sentance at a time. You have to analyze the sentiment fo the user and only return back the score of happiness. The score can be anywhere between 0 to 100. 100 for very happiness, 0 for sad.
             Sentence {summary}
             Sentiment score"""
         
